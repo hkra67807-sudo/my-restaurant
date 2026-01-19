@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعمي الاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #fdf2e9; font-family: 'Changa', sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .menu-title { color: #e67e22; margin-bottom: 30px; }
+        .menu-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .food-card { background: white; border-radius: 15px; padding: 15px; width: 250px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .food-img { width: 100%; border-radius: 10px; height: 150px; object-fit: cover; }
+        .add-btn { background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: 'Changa'; }
+        .floating-cart { position: fixed; top: 20px; left: 20px; background: #e67e22; color: white; padding: 15px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        #cart-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); width: 90%; max-width: 400px; z-index: 1000; }
+        .modal-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .close-btn { background: #95a5a6; color: white; border: none; padding: 10px; border-radius: 5px; }
+        .order-now-btn { background: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="floating-cart" onclick="openCart()">
+        <span id="cart-count">0</span> 🛒
+    </div>
+
+    <h1 class="menu-title">🍔 قائمة الطعام</h1>
+
+    <div class="menu-grid">
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500" class="food-img">
+            <h3>برجر لحم</h3>
+            <p>7,500 د.ع</p>
+            <button class="add-btn" onclick="addToCart('برجر لحم', 7500)">إضافة للسلة +</button>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" class="food-img">
+            <h3>بيتزا إيطالية</h3>
+            <p>10,000 د.ع</p>
+            <button class="add-btn" onclick="addToCart('بيتزا إيطالية', 10000)">إضافة للسلة +</button>
+        </div>
+    </div>
+
+    <div id="cart-modal">
+        <h2>🛒 سلتك</h2>
+        <div id="cart-items-container"></div>
+        <hr>
+        <p>المجموع: <span id="total-price">0</span> د.ع</p>
+        <div class="modal-buttons">
+            <button class="close-btn" onclick="closeCart()">إغلاق</button>
+            <button class="order-now-btn" onclick="alert('تم استلام طلبك بنجاح!')">تأكيد الطلب</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            total += price;
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('total-price').innerText = total.toLocaleString();
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = cart.map(item => `<p>${item.name} - ${item.price} د.ع</p>`).join('');
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'block'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+    </script>
+</body>
+</html>
